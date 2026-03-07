@@ -15,8 +15,17 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 600px;
-    text-align: center;
+    /* text-align: center; is moved to specific containers if needed */
 }
+
+#quiz-selection-container {
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-between; /* Push items to top and bottom */
+    min-height: 250px; /* Ensure enough height for space-between to work */
+    text-align: center; /* Center text content horizontally within selection container */
+}
+
 
 h1 {
     color: #333;
@@ -94,8 +103,19 @@ h1 {
 }
 
 #start-quiz-button {
-    display: inline-block; /* Show the start button */
+    display: block; /* Explicitly show the button */
+    width: 33.33%; /* Reduce width to 1/3 */
+    margin-top: auto; /* Push button to the bottom of the flex container */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
 }
+
+#quiz-select {
+    margin-bottom: 0; /* No need for margin-bottom here if button is pushed by flex */
+    font-size: 1.1em; /* Slightly larger font */
+    padding: 8px; /* Adjust padding for larger font */
+}
+
 
 .main-page-text-link {
     font-size: 0.8em; /* Roughly 10px or less, depending on base font */
