@@ -24,6 +24,11 @@ body {
     justify-content: space-between; /* Push items to top and bottom */
     min-height: 250px; /* Ensure enough height for space-between to work */
     text-align: center; /* Center text content horizontally within selection container */
+    gap: 20px; /* Add consistent space between flex items */
+}
+
+#quiz-selection-container p {
+    margin-top: -10px; /* Reduce space from h1 above it */
 }
 
 
@@ -40,6 +45,25 @@ h1 {
     font-size: 1.2em;
     margin-bottom: 20px;
     color: #555;
+}
+
+#extra-content-display {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center; /* Center images and text */
+}
+
+.extra-content-image {
+    max-width: 100%; /* Ensure image fits within container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* For centering with margin: auto; */
+    margin: 0 auto;
+}
+
+.extra-content-text {
+    font-size: 1em;
+    color: #666;
+    margin: 0;
 }
 
 .btn-grid {

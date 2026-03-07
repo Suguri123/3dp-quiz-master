@@ -1,23 +1,3 @@
-const quizSelectionContainer = document.getElementById('quiz-selection-container');
-const quizMainContainer = document.getElementById('quiz-main-container');
-const quizSelect = document.getElementById('quiz-select');
-const startQuizButton = document.getElementById('start-quiz-button');
-const quizTitleElement = document.getElementById('quiz-title');
-
-const questionTextElement = document.getElementById('question-text');
-const answerButtonsElement = document.getElementById('answer-buttons');
-const nextButton = document.getElementById('next-button');
-const feedbackTextElement = document.getElementById('feedback-text');
-const scoreElement = document.getElementById('score');
-const totalQuestionsElement = document.getElementById('total-questions');
-
-let questions = [];
-let currentQuestionIndex = 0;
-let score = 0;
-let answered = false;
-let currentQuizSheetName = "";
-
-// Define quiz metadata
 const quizDefinitions = [
     { value: "시트1", text: "3D 프린터 운용기능사 필기 퀴즈1" },
     { value: "시트2", text: "3D 프린터 운용기능사 필기 퀴즈2" },
@@ -25,7 +5,17 @@ const quizDefinitions = [
     { value: "시트4", text: "3D 프린터 운용기능사 필기 퀴즈4" }
 ];
 
-const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbykAadiM-muPxMtwwbF0ZHIZvsjjG6VHYJvL5SjGEw1g2MxrqtTUaSvnPi9iVqqoqQ-/exec';
+const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbwPfBSeHbuhhbepu0w7BruzjiIt2ilbqC1VNzZ2FMbnM34SPtcdCEh-hQcFushqYaFC/exec';
+
+// Global variables (will be assigned inside DOMContentLoaded)
+let quizSelectionContainer, quizMainContainer, quizSelect, startQuizButton, quizTitleElement;
+let questionTextElement, extraContentDisplay, answerButtonsElement, nextButton, feedbackTextElement, scoreElement, totalQuestionsElement;
+
+let questions = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let answered = false;
+let currentQuizSheetName = "";
 
 
 // --- Helper Functions ---
@@ -90,6 +80,21 @@ function showQuestion() {
         return;
     }
     questionTextElement.textContent = `${currentQuestionIndex + 1}. ${question.question}`;
+
+    extraContentDisplay.innerHTML = ''; // Clear extra content display
+    if (question.extraContent && question.extraContent !== '') { // Check if extraContent exists and is not empty
+        let contentHtml = '';
+        // Reuse image detection logic
+        const googleDriveImageRegex = /^https:\/\/drive\.google\.com\/uc\?id=[a-zA-Z0-9_-]+$/;
+        const imageFileRegex = /^(https?:\/\/[^\s$.?#].[^\s]*\.(jpe?g|png|gif|webp|svg)|[a-zA-Z0-9_./-]+\.(jpe?g|png|gif|webp|svg))$/i;
+
+        if (googleDriveImageRegex.test(question.extraContent) || imageFileRegex.test(question.extraContent)) {
+            contentHtml = `<img src="${question.extraContent}" alt="Extra Content" class="extra-content-image">`;
+        } else {
+            contentHtml = `<p class="extra-content-text">${question.extraContent}</p>`;
+        }
+        extraContentDisplay.innerHTML = contentHtml;
+    }
 
     answerButtonsElement.innerHTML = ''; // Ensure old buttons are cleared
     question.options.forEach((option, index) => {
@@ -215,10 +220,25 @@ async function fetchQuizData(sheetName) {
 // --- Event Listeners and Initial Setup ---
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Assign references inside DOMContentLoaded
+    quizSelectionContainer = document.getElementById('quiz-selection-container');
+    quizMainContainer = document.getElementById('quiz-main-container');
+    quizSelect = document.getElementById('quiz-select');
+    startQuizButton = document.getElementById('start-quiz-button');
+    quizTitleElement = document.getElementById('quiz-title');
+    questionTextElement = document.getElementById('question-text');
+    extraContentDisplay = document.getElementById('extra-content-display');
+    answerButtonsElement = document.getElementById('answer-buttons');
+    nextButton = document.getElementById('next-button');
+    feedbackTextElement = document.getElementById('feedback-text');
+    scoreElement = document.getElementById('score');
+    totalQuestionsElement = document.getElementById('total-questions');
+
     const mainPageLink = document.getElementById('main-page-link'); // Changed to link
 
     // Event listener for start quiz button
     startQuizButton.addEventListener('click', () => {
+        console.log('퀴즈 시작 버튼 클릭됨!');
         const selectedSheet = quizSelect.value;
         fetchQuizData(selectedSheet);
     });
@@ -234,5 +254,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for the next button (permanently attached once inside DOMContentLoaded)
     nextButton.addEventListener('click', handleNextButton);
 });
-
-
