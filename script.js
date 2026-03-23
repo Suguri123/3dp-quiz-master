@@ -2,7 +2,10 @@ const quizDefinitions = [
     { value: "시트1", text: "3D 프린터 운용기능사 필기 퀴즈1" },
     { value: "시트2", text: "3D 프린터 운용기능사 필기 퀴즈2" },
     { value: "시트3", text: "3D 프린터 운용기능사 필기 퀴즈3" },
-    { value: "시트4", text: "3D 프린터 운용기능사 필기 퀴즈4" }
+    { value: "시트4", text: "3D 프린터 운용기능사 필기 퀴즈4" },
+    { value: "시트5", text: "3D 프린터 운용기능사 필기 퀴즈5" },
+    { value: "시트6", text: "3D 프린터 운용기능사 필기 퀴즈6" },
+    { value: "시트7", text: "3D 프린터 운용기능사 필기 퀴즈7" }
 ];
 
 const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbxqu4JAS0kcbWAg5vzcz2e0b8ThAq9K18oztOIwBtEX2G5bpSx_q41hgIEYp3vkilwA/exec';
