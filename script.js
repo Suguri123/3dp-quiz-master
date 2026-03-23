@@ -5,7 +5,7 @@ const quizDefinitions = [
     { value: "시트4", text: "3D 프린터 운용기능사 필기 퀴즈4" }
 ];
 
-const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbwPfBSeHbuhhbepu0w7BruzjiIt2ilbqC1VNzZ2FMbnM34SPtcdCEh-hQcFushqYaFC/exec';
+const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbxqu4JAS0kcbWAg5vzcz2e0b8ThAq9K18oztOIwBtEX2G5bpSx_q41hgIEYp3vkilwA/exec';
 
 // Global variables (will be assigned inside DOMContentLoaded)
 let quizSelectionContainer, quizMainContainer, quizSelect, startQuizButton, quizTitleElement;
@@ -38,6 +38,9 @@ function selectAnswer(selectedButton, selectedOption, selectedOptionIndex, corre
     const actualCorrectAnswerString = allOptions[correctOptionIndex];
     const isCorrect = (selectedOptionIndex === correctOptionIndex); // Compare indices for correctness
 
+    const question = questions[currentQuestionIndex];
+    console.log("현재 문제 데이터:", question); // 브라우저 콘솔에서 해설 데이터 확인용
+
     let feedbackMessage = `${selectedOptionIndex + 1}번을 선택하셨습니다.`;
     if (isCorrect) {
         feedbackMessage += ' 정답입니다!';
@@ -48,6 +51,11 @@ function selectAnswer(selectedButton, selectedOption, selectedOptionIndex, corre
         feedbackMessage += ` 오답입니다. 정답은 ${correctOptionIndex + 1}번 ("${actualCorrectAnswerString}") 입니다.`;
         feedbackTextElement.classList.add('wrong');
         feedbackTextElement.classList.remove('correct');
+    }
+
+    // 해설 데이터가 있을 경우 줄바꿈과 함께 표시 (숫자 데이터도 처리되도록 String() 사용)
+    if (question.explanation && String(question.explanation).trim() !== "") {
+        feedbackMessage += `\n\n[해설]\n${String(question.explanation)}`;
     }
     feedbackTextElement.textContent = feedbackMessage;
     scoreElement.textContent = score;
@@ -82,16 +90,19 @@ function showQuestion() {
     questionTextElement.textContent = `${currentQuestionIndex + 1}. ${question.question}`;
 
     extraContentDisplay.innerHTML = ''; // Clear extra content display
-    if (question.extraContent && question.extraContent !== '') { // Check if extraContent exists and is not empty
+    if (question.extraContent && question.extraContent.trim() !== '') { 
         let contentHtml = '';
-        // Reuse image detection logic
-        const googleDriveImageRegex = /^https:\/\/drive\.google\.com\/uc\?id=[a-zA-Z0-9_-]+$/;
-        const imageFileRegex = /^(https?:\/\/[^\s$.?#].[^\s]*\.(jpe?g|png|gif|webp|svg)|[a-zA-Z0-9_./-]+\.(jpe?g|png|gif|webp|svg))$/i;
+        const trimmedContent = question.extraContent.trim();
 
-        if (googleDriveImageRegex.test(question.extraContent) || imageFileRegex.test(question.extraContent)) {
-            contentHtml = `<img src="${question.extraContent}" alt="Extra Content" class="extra-content-image">`;
+        // 이미지 파일 확장자 (png, jpg, jpeg, gif, webp, svg) 확인 (대소문자 무관)
+        const isImageFile = /\.(jpe?g|png|gif|webp|svg)$/i.test(trimmedContent);
+        // Google Drive 이미지 링크 확인
+        const isGoogleDriveImage = /^https:\/\/drive\.google\.com\/uc\?id=[a-zA-Z0-9_-]+$/.test(trimmedContent);
+
+        if (isImageFile || isGoogleDriveImage) {
+            contentHtml = `<img src="${trimmedContent}" alt="Extra Content" class="extra-content-image">`;
         } else {
-            contentHtml = `<p class="extra-content-text">${question.extraContent}</p>`;
+            contentHtml = `<p class="extra-content-text">${trimmedContent}</p>`;
         }
         extraContentDisplay.innerHTML = contentHtml;
     }

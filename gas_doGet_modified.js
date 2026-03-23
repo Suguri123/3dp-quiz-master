@@ -25,7 +25,9 @@ function doGet(e) { // e parameter contains request parameters
     let q = {
       question: row[0],
       options: [row[1], row[2], row[3], row[4]],
-      answer: row[5]
+      answer: row[5],
+      extraContent: row[6] || "",
+      explanation: row[7] || ""
     };
     questions.push(q);
   }

@@ -54,10 +54,13 @@ h1 {
 }
 
 .extra-content-image {
-    max-width: 100%; /* Ensure image fits within container */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* For centering with margin: auto; */
-    margin: 0 auto;
+    max-width: 90%; /* 화면 너비의 90%까지만 차지 */
+    max-height: 300px; /* 세로 길이를 300px로 제한 (비율 유지) */
+    height: auto; /* 가로세로 비율 유지 */
+    display: block; 
+    margin: 10px auto; /* 위아래 여백 추가 및 가운데 정렬 */
+    border-radius: 5px; /* 모서리를 약간 둥글게 (선택 사항) */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 살짝 그림자 추가 (선택 사항) */
 }
 
 .extra-content-text {
@@ -157,6 +160,11 @@ h1 {
 #feedback-container {
     margin-top: 15px;
     font-weight: bold;
+}
+
+#feedback-text {
+    white-space: pre-wrap;
+    line-height: 1.5;
 }
 
 #feedback-text.correct {
