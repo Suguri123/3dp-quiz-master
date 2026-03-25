@@ -1,11 +1,11 @@
 const quizDefinitions = [
-    { value: "시트1", text: "3D 프린터 운용기능사 필기 퀴즈1" },
-    { value: "시트2", text: "3D 프린터 운용기능사 필기 퀴즈2" },
-    { value: "시트3", text: "3D 프린터 운용기능사 필기 퀴즈3" },
-    { value: "시트4", text: "3D 프린터 운용기능사 필기 퀴즈4" },
-    { value: "시트5", text: "3D 프린터 운용기능사 필기 퀴즈5" },
-    { value: "시트6", text: "3D 프린터 운용기능사 필기 퀴즈6" },
-    { value: "시트7", text: "3D 프린터 운용기능사 필기 퀴즈7" }
+    { value: "시트1", text: "3D 프린터 운용기능사 2020-3" },
+    { value: "시트2", text: "3D 프린터 운용기능사 2021-2" },
+    { value: "시트3", text: "3D 프린터 운용기능사 2022-2" },
+    { value: "시트4", text: "3D 프린터 운용기능사 2023-2" },
+    { value: "시트5", text: "3D 프린터 운용기능사 2024-2" },
+    { value: "시트6", text: "3D 프린터 운용기능사 2025-1" },
+    { value: "시트7", text: "3D 프린터 운용기능사 모의고사1" }
 ];
 
 const GAS_BASE_URL = 'https://script.google.com/macros/s/AKfycbxqu4JAS0kcbWAg5vzcz2e0b8ThAq9K18oztOIwBtEX2G5bpSx_q41hgIEYp3vkilwA/exec';
@@ -116,13 +116,15 @@ function showQuestion() {
         button.classList.add('btn');
 
         let optionContent = `<span class="option-text">${option}</span>`;
-        // Check for Google Drive direct image URL
-        const googleDriveImageRegex = /^https:\/\/drive\.google\.com\/uc\?id=[a-zA-Z0-9_-]+$/;
-        // Check for standard image URLs ending in extensions (http/https or relative paths)
-        const imageFileRegex = /^(https?:\/\/[^\s$.?#].[^\s]*\.(jpe?g|png|gif|webp|svg)|[a-zA-Z0-9_./-]+\.(jpe?g|png|gif|webp|svg))$/i;
+        const trimmedOption = String(option).trim();
+        
+        // 이미지 파일 확장자 확인 (대소문자 무관)
+        const isOptionImageFile = /\.(jpe?g|png|gif|webp|svg)$/i.test(trimmedOption);
+        // Google Drive 이미지 링크 확인
+        const isOptionGoogleDriveImage = /^https:\/\/drive\.google\.com\/uc\?id=[a-zA-Z0-9_-]+$/.test(trimmedOption);
 
-        if (googleDriveImageRegex.test(option) || imageFileRegex.test(option)) {
-            optionContent = `<img src="${option}" alt="Option Image" class="option-image">`;
+        if (isOptionImageFile || isOptionGoogleDriveImage) {
+            optionContent = `<img src="${trimmedOption}" alt="Option Image" class="option-image">`;
         }
 
         button.innerHTML = `<span class="option-number">${index + 1}</span> ${optionContent}`;
